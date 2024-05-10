@@ -47,7 +47,18 @@ from python_qt_binding.QtWidgets import QWidget, QVBoxLayout, QSizePolicy
 
 import operator
 import matplotlib
-if qVersion().startswith('5.'):
+if qVersion().startswith('6.'):
+    try:
+        matplotlib.use('QtAgg')
+        from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+    except ImportError:
+        # work around bug in dateutil
+        import sys
+        import thread
+        sys.modules['_thread'] = thread
+        from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg as FigureCanvas
+    from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
+elif qVersion().startswith('5.'):
     if QT_BINDING == 'pyside':
         if parse_version(matplotlib.__version__) < parse_version('2.1.0'):
             raise ImportError('A newer matplotlib is required (at least 2.1.0 for PySide 2)')

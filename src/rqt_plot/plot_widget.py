@@ -33,8 +33,8 @@ import time
 from ament_index_python.resources import get_resource
 from python_qt_binding import loadUi
 from python_qt_binding.QtCore import Qt, QTimer, qWarning, Slot
-from python_qt_binding.QtGui import QIcon
-from python_qt_binding.QtWidgets import QAction, QMenu, QWidget
+from python_qt_binding.QtGui import QIcon, QAction
+from python_qt_binding.QtWidgets import QMenu, QWidget
 
 from rosidl_parser.definition import AbstractGenericString
 from rosidl_parser.definition import AbstractNestedType
@@ -216,7 +216,8 @@ class PlotWidget(QWidget):
     def switch_data_plot_widget(self, data_plot):
         self.enable_timer(enabled=False)
 
-        self.data_plot_layout.removeWidget(self.data_plot)
+        if self.data_plot is not None:
+            self.data_plot_layout.removeWidget(self.data_plot)
         if self.data_plot is not None:
             self.data_plot.close()
 
